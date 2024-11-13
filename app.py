@@ -1,9 +1,42 @@
+import sys
+import os
+import logging
+import appdirs
+
+# Configurer le logging
+app_name = "Fundselling"
+DATA_DIR = appdirs.user_data_dir(app_name)
+os.makedirs(DATA_DIR, exist_ok=True)
+
+logging.basicConfig(
+    filename=os.path.join(DATA_DIR, 'app.log'),
+    level=logging.INFO,
+    format='%(asctime)s:%(levelname)s:%(message)s'
+)
+
+# Rediriger stdout et stderr vers le fichier de log
+class StreamToLogger(object):
+    def __init__(self, logger, log_level=logging.INFO):
+        self.logger = logger
+        self.log_level = log_level
+        self.linebuf = ''
+
+    def write(self, buf):
+        for line in buf.rstrip().splitlines():
+            self.logger.log(self.log_level, line.rstrip())
+
+    def flush(self):
+        pass
+
+sys.stdout = StreamToLogger(logging.getLogger('STDOUT'), logging.INFO)
+sys.stderr = StreamToLogger(logging.getLogger('STDERR'), logging.ERROR)
+
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-import os
 import shutil
 import appdirs
+
 
 # Define your application name for appdirs
 app_name = "Fundselling"
