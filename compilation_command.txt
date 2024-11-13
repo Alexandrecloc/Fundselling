@@ -1,0 +1,1 @@
+python -m PyInstaller --onefile --noconsole --icon "Fundselling.ico" --add-data "app.py;." --additional-hooks-dir=. --hidden-import appdirs --copy-metadata streamlit --copy-metadata appdirs Fundselling.py
